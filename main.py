@@ -38,7 +38,16 @@ async def send_interval_reminder():
     )
 
 
+async def start_message():
+    async with BotConfig.tele_ubot:
+        await BotConfig.tele_ubot.send_message(
+            entity="me",
+            message="Бот автоподнимальщик резюме запущен"
+        )
+
+
 async def main():
+    await start_message()
     BotConfig.scheduler.start()
     await send_interval_reminder()
     await asyncio.Event().wait()
