@@ -32,7 +32,7 @@ async def send_msg_to_begin():
 async def send_interval_reminder():
     BotConfig.scheduler.add_job(
         send_msg_to_begin,
-        trigger=CronTrigger(hour=11, minute=0),
+        trigger=CronTrigger(hour=8, minute=0),  # Время по UTC
         id="daily_resume_up",
         replace_existing=True,
     )
