@@ -3,15 +3,15 @@ services:
     container_name: auto_up_resume_bot
     build:
       context: .
-    restart: no # поменять на always потом
+    restart: always
     command: python main.py
     depends_on:
       - redis_
-#    deploy:
-#      restart_policy:
-#        condition: on-failure
-#        delay: 5
-#        max_attempts: 3
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
     networks:
       - nginx_net
     env_file:
@@ -28,9 +28,9 @@ services:
     networks:
       nginx_net:
     volumes:
-#      - ./redis_config/redis.conf:/usr/local/etc/redis/redis.conf:ro
+      - ./redis_config/redis.conf:/usr/local/etc/redis/redis.conf:ro
       - redis_data:/data
-    command: [ "redis-server" ] #, "/usr/local/etc/redis/redis.conf" ]
+    command: [ "redis-server", "/usr/local/etc/redis/redis.conf" ]
 
 volumes:
   redis_data:
@@ -38,6 +38,6 @@ volumes:
 
 networks:
   nginx_net:
-#    external: true
+    external: true
     driver:
       bridge
