@@ -1,0 +1,43 @@
+services:
+  auto_up_resume_bot:
+    container_name: auto_up_resume_bot
+    build:
+      context: .
+    restart: no # поменять на always потом
+    command: python main.py
+    depends_on:
+      - redis_
+#    deploy:
+#      restart_policy:
+#        condition: on-failure
+#        delay: 5
+#        max_attempts: 3
+    networks:
+      - nginx_net
+    env_file:
+      - .env
+    volumes:
+      - .:/auto_up_resume_bot
+      - ./src/bot/logs:/src/bot/logs
+
+  redis_:
+    image: redis:7.2.5-alpine3.20
+    container_name: redis_
+    ports:
+      - "127.0.0.1:6379:6379"
+    networks:
+      nginx_net:
+    volumes:
+#      - ./redis_config/redis.conf:/usr/local/etc/redis/redis.conf:ro
+      - redis_data:/data
+    command: [ "redis-server" ] #, "/usr/local/etc/redis/redis.conf" ]
+
+volumes:
+  redis_data:
+
+
+networks:
+  nginx_net:
+#    external: true
+    driver:
+      bridge

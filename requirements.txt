@@ -1,0 +1,6 @@
+APScheduler
+environs
+redis
+Telethon
+loguru
+tenacity
