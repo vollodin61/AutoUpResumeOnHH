@@ -5,8 +5,6 @@ services:
       context: .
     restart: always
     command: python main.py
-    depends_on:
-      - redis_
     deploy:
       restart_policy:
         condition: on-failure
